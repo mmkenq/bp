@@ -24,4 +24,5 @@ end;
 
 Begin
   MakeStack;
+  writeln('Congrats! we created a stack!');
 End.

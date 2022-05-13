@@ -39,5 +39,6 @@ begin
 end;
 
 Begin
-  MakeQueue;  
+  MakeQueue;
+  writeln('Congrats! we created a queue');
 end.
