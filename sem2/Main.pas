@@ -1,4 +1,4 @@
-﻿uses crt, Stak, Queue, Group;//, File, TFile, Tree;
+﻿uses crt, Stak, Queue, Files, Group;//, TFile, Tree;
 
 Var Mode: integer;
     ok: boolean;
@@ -24,7 +24,7 @@ Begin
      1: MenuStack;
      2: MenuQueue;
      3: MenuGroup;
-     //4: MenuFiles;
+     4: MenuFiles;
      //5: MenuFilesT;
      //6: MenuTrees;
      //0: Ok:=False;
