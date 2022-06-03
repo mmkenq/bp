@@ -1,4 +1,4 @@
-﻿uses crt, Stak, Queue, Files, Group;//, TFile, Tree;
+﻿uses crt, Stak, Queue, Files, Group, Trees;//, TFile;
 
 Var Mode: integer;
     ok: boolean;
@@ -11,7 +11,7 @@ Begin
      Writeln('Menu');
      Writeln('  1) Stack');
      Writeln('  2) Queue');
-     Writeln('  3) Group');
+     Writeln('  3) Double Menu');
      Writeln('  4) File');
      Writeln('  5) Text File');
      Writeln('  6) Tree');
@@ -26,8 +26,8 @@ Begin
      3: MenuGroup;
      4: MenuFiles;
      //5: MenuFilesT;
-     //6: MenuTrees;
-     //0: Ok:=False;
+     6: MenuTrees;
+     0: Ok:=False;
     else
       begin
         GoToXY(30,20);
