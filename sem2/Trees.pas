@@ -12,7 +12,7 @@ type
 
 procedure MenuTrees;
 procedure MakeTree(var Top: NodePtr);// Создание дерева
-procedure WayUpDown(Top: NodePtr);// Обход сверху вниз
+procedure WayUpDown(Top: NodePtr);// Обход сверху вниз|
 procedure WayDownUp(Top: NodePtr);// Обход снизу вверх
 procedure WayHoriz(Top: NodePtr; Level: byte);// Обход вершин одного уровня
 function High(Top: NodePtr): byte;// Высота дерева
@@ -41,8 +41,9 @@ begin
   GoToXY(30, 18); writeln('Введите текущий узел:');
   GoToXY(40, 19); readln(Leaf^.Name);
   GoToXY(30, 18); writeln(' ');
+  
   GoToXY(40, 19); writeln(' ');
-  GoToXY(25, 20); writeln(Leaf^.Name, ' имеет левое поддерево?:');
+  GoToXY(25, 20); writeln(Leaf^.Name, ' имеет левое поддерево? (y/n):');
   GoToXY(40, 21); readln(Key);
   GoToXY(25, 20); writeln(' ');
   GoToXY(40, 21); writeln(' ');
@@ -51,7 +52,7 @@ begin
     new(Top); Leaf^.Left := Top; MakeSubTrees(Top)
   end
   else Leaf^.Left := nil;
-  GoToXY(25, 20); writeln(Leaf^.Name, ' имеет правое поддерево?:');
+  GoToXY(25, 20); writeln(Leaf^.Name, ' имеет правое поддерево? (y/n):');
   GoToXY(40, 21); readln(Key);
   GoToXY(25, 20); writeln(' ');
   GoToXY(40, 21); writeln(' ');
@@ -252,80 +253,46 @@ begin
   end
 end;
 
-procedure MenuTrees; //Меню операций с деревьями
-const N = 9;
-var Ok : boolean; Vect, i : integer;
-    Headline : array[1..N] of string;
+procedure MenuTrees;
+Var Mode:integer;
+    Ok:boolean;
 begin
-  Headline[1] := 'Создание дерева';
-  Headline[2] := 'Обход сверху вниз';
-  Headline[3] := 'Обход снизу вверх';
-  Headline[4] := 'Обход вершин одного уровня';
-  Headline[5] := 'Высота дерева';
-  Headline[6] := 'Просмотр дерева';
-  Headline[7] := 'Добавление поддерева';
-  Headline[8] := 'Удаление поддерева';
-  Headline[9] := 'Назад';
-  Ok := true;
-  while Ok do
+ Ok:=True;
+ while Ok do
   begin
-    Vect := 1;
-    ClrScr;
-    GoToXY(20,1); writeln('Деревья (выберите режим)');
-    
-    TextColor(0);TextBackground(15);
-    GoToXY(5,2);write(Headline[1]);
-    TextColor(15);TextBackground(0);
-    
-    for i := 2 to N do
-      begin
-        GoToXY(5,i+1);write(Headline[i]);
-      end;
-      GoToXY(5,2);
-    
-  while true do
-    begin
-      case ReadKey of
-        '&' : begin   //Вверх
-                GoToXY(5,Vect+1);write(Headline[Vect]);
-                Dec(Vect);
-                if Vect = 0 then
-                  Vect := N;  
-                TextColor(0);TextBackground(15);
-                GoToXY(5,Vect+1);write(Headline[Vect]);
-                TextColor(15);TextBackground(0);
-              end;
-        '(' : begin   //Вниз
-                GoToXY(5,Vect+1);write(Headline[Vect]);
-                Inc(Vect);
-                if Vect > N then
-                  Vect := 1; 
-                TextColor(0);TextBackground(15);
-                GoToXY(5,Vect+1);write(Headline[Vect]);
-                TextColor(15);TextBackground(0);
-              end;
-        #13 : break
-      end;
-    end;
-    ClrScr;
-    case Vect of 
-      1 : MakeTree(Top);
-      2 : begin WayUpDown(Top); Wait end;
-      3 : begin WayDownUp(Top); Wait end;
-      4 : begin
+   ClrScr;
+   writeln(' Деревья:');
+   writeln('    1: Создание дерева');
+   writeln('    2: Обход сверху вниз');
+   writeln('    3: Обход снизу вверх');
+   writeln('    4: Обход вершин одного уровня');
+   writeln('    5: Высота дерева');
+   writeln('    6: Просмотр дерева');
+   writeln('    7: Добавление поддерева');
+   writeln('    8: Удаление поддерева');
+   writeln('    0: Выход');
+   readln(Mode);
+    case Mode of
+     1:begin ClrScr; MakeTree(Top); Wait end;
+     2:begin ClrScr; WayUpDown(Top); Wait end;
+     3:begin ClrScr; WayDownUp(Top); Wait end;
+     4:begin ClrScr; 
           GoToXY(30, 18); writeln('Введите уровень');
           GoToXY(40, 19); readln(Level); ClrScr;
           WayHoriz(Top, Level); Wait
           end;
-      5 : begin writeln(High(Top):3); Wait end;
-      6 : begin ViewTree(Top); Wait end;
-      7 : AddSubTree(Top);
-      8 : DeleteSubTree(Top);
-      9 : begin
-            GoToXY(5,N+1);writeln(Headline[N]);
-            Ok:=False;GoToXY(20,20)
-          end;
-    end;
+     5:begin ClrScr; writeln(High(Top):3); Wait end;
+     6:begin ClrScr; ViewTree(Top); Wait end;
+     7:AddSubTree(Top);
+     8:DeleteSubTree(Top);
+     0: Ok:=false;
+       else
+       begin
+        writeln('Ошибка! Повторите Ввод!');
+        Wait; 
+       end;
+     end; 
   end;
-end;
+end; 
+   
 end.
