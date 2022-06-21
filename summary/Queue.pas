@@ -29,27 +29,27 @@ Procedure MenuQueue;
     while ok do
     begin
       Clrscr;
-      writeln('Очередь:');
-      writeln('  1:Создание очереди');
-      writeln('  2:Добавление очереди');
-      writeln('  3:Удаление первого элемента очереди');
-      writeln('  4:Удаление очереди');
-      writeln('  5:Удаление числа из очереди');
-      writeln('  6:Просмотр очереди');
-      writeln('  0:Выход');
+      writeln('Menu/QUEUE:');
+      writeln('  1: Make queue');
+      writeln('  2: Add to queue');
+      writeln('  3: Show queue');
+      writeln('  4: Delete queue');
+      writeln('  5: Delete 1st element');
+      writeln('  6: Delete number from queue');;
+      writeln('  0: Exit');
       readln(mode);
         case mode of
         1:begin Clrscr; MakeQueue(Tmpl,Tmpr); ClrScr; ViewQueue(Tmpl); Wait end;
         2:begin Clrscr; AddQueue(Tmpr); ClrScr; ViewQueue(Tmpl); Wait end;
-        3:begin Clrscr; DeleteLeft(Tmpl); ClrScr; ViewQueue(Tmpl); Wait end;
+        3:begin Clrscr; ViewQueue(Tmpl); Wait end;
         4:begin Clrscr; DeleteQueue(Tmpl); ClrScr; ViewQueue(Tmpl); Wait end;
-        5:begin Clrscr; DeleteNQueue(Tmpl,Tmpr); ClrScr; ViewQueue(Tmpl); Wait end;
-        6:begin Clrscr; ViewQueue(Tmpl); Wait end;
+        5:begin Clrscr; DeleteLeft(Tmpl); ClrScr; ViewQueue(Tmpl); Wait end;
+        6:begin Clrscr; DeleteNQueue(Tmpl,Tmpr); ClrScr; ViewQueue(Tmpl); Wait end;
         0:ok:=False;
           else
           begin
             GoToXY(30,21);
-            writeln('Ошибка!Повторите Ввод');
+            writeln('Error! Try again..');
             Wait
           end;
         end;
@@ -68,7 +68,7 @@ procedure MakeQueue(var Left,Right:PtrQ);
 var Ok: boolean;
 begin
   Ok := true; 
-  writeln('Введите очередь 0 для остановки ввода');
+  writeln('Write queue (0 for break)');
   readln(value);
   New(top);
   if value = 0 then 
@@ -95,12 +95,13 @@ begin
     end;
   end;
 end;
+
 //добавить эл в список
 procedure AddQueue(var Right:PtrQ);
 var Ok: boolean;
 begin
   Ok := true;
-  writeln('Введите новые элементы 0 для остановки ввода');
+  writeln('Write new nums (0 for break)');
     while Ok do
   begin
     readln(value);
@@ -118,10 +119,11 @@ begin
     end;
   end;
 end;
+
 //просмотр очереди
 procedure ViewQueue(var Left:PtrQ);
 begin
-  writeln('Очередь:');  
+  writeln('Queue:');  
   Kon := Left;
   while Kon <> nil do
   begin
@@ -143,20 +145,24 @@ end;
 //удалить число из очереди
 procedure DeleteNQueue(var Left,Right:PtrQ);
 begin
-  writeln('Введите число которое хотите удалить: ');
+  writeln('Write the number you want to delete: ');
   readln(value);
   Kon := Left;
-  while (Kon^.Next <> nil) and (Kon^.Next^.Inf <> value) do
-    Kon := Kon^.Next;
-  if (Kon^.Next <> nil) and (Kon^.Next^.Next = nil)then
-  begin
-    Kon^.Next:=Kon^.Next^.Next;
-    Right:=Kon;
-  end;
-
-  if (Kon^.Next <> nil) then 
-    Kon^.Next:=Kon^.Next^.Next
-  else
-    writeln('Число не найденно.');
+  
+  if Kon^.Inf = value then DeleteLeft(Left)
+  else begin
+    while (Kon^.Next <> nil) and (Kon^.Next^.Inf <> value) do
+      Kon := Kon^.Next;
+    if (Kon^.Next <> nil) and (Kon^.Next^.Next = nil)then
+    begin
+      Kon^.Next:=Kon^.Next^.Next;
+      Right:=Kon;
+    end;
+  
+    if (Kon^.Next <> nil) then 
+      Kon^.Next:=Kon^.Next^.Next
+    else
+      writeln('Could not find the number, try another..');
+   end;
 end;
 end.

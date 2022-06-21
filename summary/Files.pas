@@ -38,7 +38,7 @@ begin
     with FlowStudent do
         while Ok do
         begin
-          GoToXY(30,10); write('New entry? (y/n)');
+          GoToXY(30,10); write('New entry? (Y/n)');
           GoToXY(30,11); readln(ch);
           GoToXY(30,11); clearline;
           if ch = 'n' then
@@ -47,9 +47,9 @@ begin
           end
           else
           begin
-            GoToXY(30,20); writeln('Student name');
+            GoToXY(30,20); writeln('Student name:');
             GoToXY(30,21); readln(Name);
-            GoToXY(30,22); writeln('Mark');
+            GoToXY(30,22); writeln('Mark:');
             GoToXY(30,23); readln(Mark);
             GoToXY(30,20); clearline;
             GoToXY(30,21); clearline;
