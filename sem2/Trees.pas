@@ -10,7 +10,6 @@ type
     Left, Right: NodePtr
   end;
 
-procedure MenuTrees;
 procedure MakeTree(var Top: NodePtr);// Создание дерева
 procedure WayUpDown(Top: NodePtr);// Обход сверху вниз|
 procedure WayDownUp(Top: NodePtr);// Обход снизу вверх
@@ -19,8 +18,14 @@ function High(Top: NodePtr): byte;// Высота дерева
 procedure ViewTree(Top: NodePtr);// Просмотр дерева
 procedure AddSubTree(Top: NodePtr);// Добавление поддерева
 procedure DeleteSubTree(Top: NodePtr);// Удаление поддерева
+
+
+Implementation
 procedure Wait;
-implementation
+begin
+  repeat until KeyPressed;
+  while KeyPressed do ReadKey;
+end;
 
 var
   Symbol, Key: char;
@@ -28,22 +33,16 @@ var
   Top, Leaf: NodePtr;
   Mode, Level: byte;
 
-procedure Wait;
-begin
-  repeat until KeyPressed;
-  while KeyPressed do ReadKey;
-end;
-
 procedure MakeSubTrees(Leaf: NodePtr);
 var
   Top: NodePtr;
 begin
-  GoToXY(30, 18); writeln('Введите текущий узел:');
+  GoToXY(30, 18); writeln('Write current node:');
   GoToXY(40, 19); readln(Leaf^.Name);
   GoToXY(30, 18); writeln(' ');
   
   GoToXY(40, 19); writeln(' ');
-  GoToXY(25, 20); writeln(Leaf^.Name, ' имеет левое поддерево? (y/n):');
+  GoToXY(25, 20); writeln(Leaf^.Name, ' has LEFT sub-tree? (y/n):');
   GoToXY(40, 21); readln(Key);
   GoToXY(25, 20); writeln(' ');
   GoToXY(40, 21); writeln(' ');
@@ -52,7 +51,7 @@ begin
     new(Top); Leaf^.Left := Top; MakeSubTrees(Top)
   end
   else Leaf^.Left := nil;
-  GoToXY(25, 20); writeln(Leaf^.Name, ' имеет правое поддерево? (y/n):');
+  GoToXY(25, 20); writeln(Leaf^.Name, ' has RIGHT sub-tree? (y/n):');
   GoToXY(40, 21); readln(Key);
   GoToXY(25, 20); writeln(' ');
   GoToXY(40, 21); writeln(' ');
@@ -143,17 +142,17 @@ end;
 
 procedure AddSubTree(Top: NodePtr);
 begin
-  GoToXY(30, 18); writeln('Введите искомый узел');
+  GoToXY(30, 18); writeln('Write search node');
   GoToXY(40, 19); readln(Symbol);
   Flag := True; SearchNode(Top, Leaf); ClrScr;
   if Flag = True then
   begin
-    write('Узел ', Symbol, ' не найден'); Wait
+    write('Node ', Symbol, ' was not found'); Wait
   end
   else
   begin
     GoToXY(25, 20);
-    writeln('Желаете построить левое поддерево у ', Leaf^.Name, ' ?');
+    writeln('Wanna make LEFT sub-tree from ', Leaf^.Name, ' ?');
     GoToXY(40, 21); readln(Key);
     GoToXY(23, 20);
     writeln(' ');
@@ -162,8 +161,8 @@ begin
       if Leaf^.Left <> nil then
       begin
         GoToXY(25, 19);
-        writeln('Левое поддерево у ', Leaf^.Name, ' уже есть');
-        GoToXY(25, 20); writeln('Все-таки желаете?');
+        writeln('Left sub-tree of ', Leaf^.Name, ' already exists!');
+        GoToXY(25, 20); writeln('Override?');
         GoToXY(40, 21); readln(Key);
         GoToXY(25, 19);
         writeln(' ');
@@ -179,7 +178,7 @@ begin
         MakeTree(Top); Leaf^.Left := Top
       end;
     GoToXY(25, 20);
-    writeln('Желаете построить правое поддерево у ', Leaf^.Name, ' ?');
+    writeln('Wanna create RIGHT sub-tree from ', Leaf^.Name, ' ?');
     GoToXY(40, 21); readln(Key);
     GoToXY(23, 20);
     writeln(' ');
@@ -188,8 +187,8 @@ begin
       if Leaf^.Right <> nil then
       begin
         GoToXY(25, 19);
-        writeln('Правое поддерево у ', Leaf^.Name, ' уже есть');
-        GoToXY(25, 20); writeln('Все-таки желаете?');
+        writeln('Right sub-tree of ', Leaf^.Name, ' already exists!');
+        GoToXY(25, 20); writeln('Override?');
         GoToXY(40, 21); readln(Key);
         GoToXY(25, 19);
         writeln(' ');
@@ -209,17 +208,17 @@ end;
 
 procedure DeleteSubTree(Top: NodePtr);
 begin
-  GoToXY(30, 18); writeln('Введите искомый узел');
+  GoToXY(30, 18); writeln('Write search node:');
   GoToXY(40, 19); readln(Symbol);
   Flag := True; SearchNode(Top, Leaf); ClrScr;
   if Flag = True then
   begin
-    write('Узел ', Symbol, ' не найден'); Wait
+    write('Node ', Symbol, ' was not found!'); Wait
   end
   else
   begin
     GoToXY(25, 20);
-    writeln('Желаете удалить левое поддерево ', Leaf^.Name, ' ?');
+    writeln('Wanna delete LEFT sub-tree ', Leaf^.Name, ' ?');
     GoToXY(40, 21); readln(Key);
     GoToXY(25, 20);
     writeln(' ');
@@ -227,7 +226,7 @@ begin
     if Key in ['y', 'Y', 'н', 'Н'] then
     begin
       GoToXY(25, 20);
-      writeln('Действительно желаете удалить левое поддерево?');
+      writeln('You sure wanna delete LEFT sub-tree?');
       GoToXY(40, 21); readln(Key);
       GoToXY(25, 20);
       writeln(' ');
@@ -235,7 +234,7 @@ begin
       if Key in ['y', 'Y', 'н', 'Н'] then Leaf^.Left := nil
     end;
     GoToXY(25, 20);
-    writeln(' Желаете удалить правое поддерево ', Leaf^.Name, ' ?');
+    writeln('Wanna delete RIGHT sub-tree ', Leaf^.Name, ' ?');
     GoToXY(40, 21); readln(Key);
     GoToXY(25, 20);
     writeln(' ');
@@ -243,7 +242,7 @@ begin
     if Key in ['y', 'Y', 'н', 'Н'] then
     begin
       GoToXY(25, 20);
-      writeln(' Действительно желаете удалить правое поддерево?');
+      writeln('You sure wanna delete RIGHT sub-tree?');
       GoToXY(40, 21); readln(Key);
       GoToXY(25, 20);
       writeln(' ');
@@ -261,23 +260,23 @@ begin
  while Ok do
   begin
    ClrScr;
-   writeln(' Деревья:');
-   writeln('    1: Создание дерева');
-   writeln('    2: Обход сверху вниз');
-   writeln('    3: Обход снизу вверх');
-   writeln('    4: Обход вершин одного уровня');
-   writeln('    5: Высота дерева');
-   writeln('    6: Просмотр дерева');
-   writeln('    7: Добавление поддерева');
-   writeln('    8: Удаление поддерева');
-   writeln('    0: Выход');
+   writeln('Menu/TREES:');
+   writeln('  1: Make new tree');
+   writeln('  2: WayUpDown');
+   writeln('  3: WayDownUp');
+   writeln('  4: WayHorizon');
+   writeln('  5: Tree height');
+   writeln('  6: View tree');
+   writeln('  7: Add sub-tree');
+   writeln('  8: Delete sub-tree');
+   writeln('  0: Exit');
    readln(Mode);
     case Mode of
      1:begin ClrScr; MakeTree(Top); Wait end;
      2:begin ClrScr; WayUpDown(Top); Wait end;
      3:begin ClrScr; WayDownUp(Top); Wait end;
      4:begin ClrScr; 
-          GoToXY(30, 18); writeln('Введите уровень');
+          GoToXY(30, 18); writeln('Write Node Level:');
           GoToXY(40, 19); readln(Level); ClrScr;
           WayHoriz(Top, Level); Wait
           end;
@@ -288,7 +287,7 @@ begin
      0: Ok:=false;
        else
        begin
-        writeln('Ошибка! Повторите Ввод!');
+        writeln('Error! Try again!');
         Wait; 
        end;
      end; 
